@@ -14,18 +14,20 @@
 
     <script type="text/babel">
       const buttonsVariants = {
-        base: "bg-gray-500 hover:bg-grey-600",
-        good: "bg-green-500 hover:bg-green-600",
-        bad: "bg-red-500 hover:bg-red-600",
+        base: "bg-gray-500 hover:bg-gray-600",
+        success: "bg-green-500 hover:bg-green-600",
+        error: "bg-red-500 hover:bg-red-600",
       };
 
-      function Button({ variant = "base", children }) {
+      function Button({ variant = "base", children, className, ...props }) {
         return (
           <button
             className={`
             px-3 py-2 rounded text-white
             ${buttonsVariants[variant]}
+            ${className}
             `}
+            {...props}
           >
             {children}
           </button>
@@ -35,9 +37,11 @@
       function App() {
         return (
           <main className="flex gap-2 p-3">
-            <Button>Info</Button>
-            <Button variant="good">Send</Button>
-            <Button variant="bad">Cancel</Button>
+            <Button title="Informations" className="mr-16">
+              Info
+            </Button>
+            <Button variant="success">Send</Button>
+            <Button variant="error">Cancel</Button>
           </main>
         );
       }
