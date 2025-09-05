@@ -187,7 +187,7 @@
           <Card
             className={`
         flex flex-col gap-[1.625rem] w-[22.25rem]
-        pt-14 px-8 pb-8 
+        pt-14 px-8 pb-8
         `}
           >
             <Display operation="1 + 1" result="2" />
@@ -196,10 +196,27 @@
         );
       }
 
+      function History() {
+        return (
+          <Card className="py-10 px-8">
+            <Text as="h1" variant="heading" className="mb-4">
+              Operation history
+            </Text>
+
+            <ul>
+              <Text as="li">1 + 1 = 2</Text>
+              <Text as="li">7 + 3 - 5 = 5</Text>
+              <Text as="li">100 / 4 = 25</Text>
+              <Text as="li">5 * 200 = 1000</Text>
+            </ul>
+          </Card>
+        );
+      }
       function App() {
         return (
           <main className="py-28 px-4">
             <Calculator></Calculator>
+            <History></History>
           </main>
         );
       }
