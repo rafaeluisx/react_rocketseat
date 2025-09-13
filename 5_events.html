@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rocketseat - ReactJS - Title</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <script type="text/babel">
+      ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+
+      function App() {
+        return (
+          <main>
+            <Alert1></Alert1>
+            <Alert2></Alert2>
+            <Alert3></Alert3>
+          </main>
+        );
+      }
+
+      function Alert1() {
+        function handleAlert(event) {
+          console.log(alert);
+          alert("Here is an alert!");
+        }
+        return (
+          <button type="button" onClick={handleAlert}>
+            Alert
+          </button>
+        );
+      }
+
+      function Alert2() {
+        function handleAlertClick(msg) {
+          alert(msg);
+        }
+        return (
+          <button
+            type="button"
+            onClick={() => handleAlertClick("Here is another alert!")}
+          >
+            Alert with parameters
+          </button>
+        );
+      }
+
+      function Alert3() {
+        function handleAlertClick(event) {
+          alert(event.target.previousSibling.value);
+        }
+        function handleAlertChange(event) {
+          console.log(event.target.value);
+        }
+        return (
+          <div>
+            <input
+              type="text"
+              placeholder="type here..."
+              onChange={handleAlertChange}
+            ></input>
+            <button type="button" onClick={handleAlertClick}>
+              Alert with input content
+            </button>
+          </div>
+        );
+      }
+    </script>
+  </body>
+</html>
