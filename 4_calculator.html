@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Rocketseat - React.js - Fundamentos</title>
+    <title>Rocketseat - React.js - Calculator</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -142,6 +142,22 @@
         ],
       ];
 
+      const CalculatorContext = React.createContext();
+
+      function CalculatorProvider({ children }) {
+        const [history, setHistory] = React.useState([]);
+
+        function updateHistory(operation, parsedResult) {
+          setHistory((prev) => [...prev, `${operation}=${parsedResult}`]);
+        }
+
+        return (
+          <CalculatorContext.Provider value={{ history, updateHistory }}>
+            {children}
+          </CalculatorContext.Provider>
+        );
+      }
+
       function Display({ operation, result }) {
         return (
           <div
@@ -169,6 +185,7 @@
       function Calculator() {
         const [operation, setOperation] = React.useState("");
         const [result, setResult] = React.useState("");
+        const { updateHistory } = React.useContext(CalculatorContext);
 
         function handleInputClick(input) {
           if (input === "C") {
@@ -184,12 +201,18 @@
           }
 
           if (input === "=") {
-            const operationResult = eval(operation.replace(/,/g, "."));
-            const parsedResult = operationResult
-              .toString()
-              ?.replace(/\./g, ",");
-            setResult(parsedResult);
-            return;
+            try {
+              const operationResult = eval(operation.replace(/,/g, "."));
+              const parsedResult = operationResult
+                .toString()
+                ?.replace(/\./g, ",");
+              setResult(parsedResult);
+              updateHistory(operation, parsedResult);
+              return;
+            } catch (error) {
+              alert("Falha na operação: " + error);
+              return;
+            }
           }
 
           if (result) {
@@ -236,21 +259,31 @@
       }
 
       function History() {
+        const { history } = React.useContext(CalculatorContext);
+
         return (
           <Card className="w-full py-10 px-8">
             <Text as="h1" variant="heading" className="mb-4">
               Operation history
             </Text>
 
-            <ul>
-              <Text as="li">1 + 1 = 2</Text>
-              <Text as="li">7 + 3 - 5 = 5</Text>
-              <Text as="li">100 / 4 = 25</Text>
-              <Text as="li">5 * 200 = 1000</Text>
-            </ul>
+            {history.length > 0 ? (
+              <ul>
+                {history.map((value, index) => (
+                  <Text as="li" key={`item-${index}`}>
+                    {value}
+                  </Text>
+                ))}
+              </ul>
+            ) : (
+              <Text as="p" variant="muted">
+                Your operation history is empty
+              </Text>
+            )}
           </Card>
         );
       }
+
       function App() {
         return (
           <main
@@ -261,8 +294,10 @@
                   gap-2
                   `}
           >
-            <Calculator></Calculator>
-            <History></History>
+            <CalculatorProvider>
+              <Calculator></Calculator>
+              <History></History>
+            </CalculatorProvider>
           </main>
         );
       }
