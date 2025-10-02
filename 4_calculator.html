@@ -194,12 +194,13 @@
         );
       }
 
-      function Calculator() {
+      function useCalculator() {
         const [operation, setOperation] = React.useState("");
         const [result, setResult] = React.useState("");
         const { updateHistory } = React.useContext(CalculatorContext);
+        return { operation, result, doCalculation };
 
-        function handleInputClick(input) {
+        function doCalculation(input) {
           if (input === "C") {
             setOperation("");
             setResult("");
@@ -239,6 +240,14 @@
           }
 
           setOperation(`${operation}${input}`);
+        }
+      }
+
+      function Calculator() {
+        const { operation, result, doCalculation } = useCalculator();
+
+        function handleInputClick(input) {
+          doCalculation(input);
         }
 
         return (
